@@ -6,24 +6,30 @@ describe Video do
   it { should validate_presence_of(:description) }
 
   describe "#search_by_title" do
-
-    # 1. Where you cannot find a single video
-    it "returns empty array if zero videos are found" do
-      videos_found = Video.find(title: "Fancy title")
-      expect(videos_found.title_only?).to eq(true)
+    it "returns empty array if zero videos are found / no match" do
+      bugs_bunny = Video.create(title: "Bugs Bunny", description: "Chasing rabbits")
+      ben_hur = Video.create(title: "Ben Hur", description: "Roman circus maximus")
+      expect(Video.search_by_title("hello")).to eq([])
     end
-
-    # 2. Where you can find one
-    it "returns an array with one video title if one video is found" do
-      videos_found = Video.new(title: "Fancy title", description: "")
-      expect(videos_found.title_only?).to eq(true)
+    it "returns array of one video if title matches exactly" do
+      bugs_bunny = Video.create(title: "Bugs Bunny", description: "Chasing rabbits")
+      ben_hur = Video.create(title: "Ben Hur", description: "Roman circus maximus")
+      expect(Video.search_by_title("Bugs Bunny")).to eq([bugs_bunny])
     end
-
-    # 3. Where you can find multiple videos.
-    it "returns an array with multiple video titles if more than one video is found" do
-      videos_found = Video.new(title: "Fancy title", description: "Description")
-      expect(videos_found.title_only?).to eq(false)
+    it "returns array of one video  if partially matched" do
+      bugs_bunny = Video.create(title: "Bugs Bunny", description: "Chasing rabbits")
+      ben_hur = Video.create(title: "Ben Hur", description: "Roman circus maximus")
+      expect(Video.search_by_title("s Bunn")).to eq([bugs_bunny])
     end
-
+    it "returns array of matched videos ordered by created_at" do
+      bugs_bunny = Video.create(title: "Bugs Bunny", description: "Chasing rabbits", created_at: 1.day.ago)
+      bugs_hur = Video.create(title: "Bugs Hur", description: "Rabbit circus maximus")
+      expect(Video.search_by_title("Bugs")).to eq([bugs_hur, bugs_bunny])
+    end
+    it "returns empty array for search with empty string" do
+      bugs_bunny = Video.create(title: "Bugs Bunny", description: "Chasing rabbits", created_at: 1.day.ago)
+      bugs_hur = Video.create(title: "Bugs Hur", description: "Rabbit circus maximus")
+      expect(Video.search_by_title("")).to eq([])
+    end
   end
 end
