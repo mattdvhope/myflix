@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Category do
   it { should have_many(:videos) }
+  it { should validate_presence_of (:name) }
 
   describe "#recent_videos" do # 6 most recent videos; most recent video should be first
     it "returns empty array if no videos are in Category" do
