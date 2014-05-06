@@ -10,7 +10,7 @@ describe UsersController do
   end
 
   describe "POST create" do
-    before { User.first.destroy } # I wrote this here b/c for some reason after I'd written the 'review' method in queue_item.rb, for some reason, it this Fabricates an extra User object.  I don't yet know why.  In the UI, it works find: It only creates one user when I create a user in the browser.
+    before { User.first.destroy } # I wrote this here b/c for some reason it Fabricates an extra User object.  I don't yet know why.  In the UI, it works fine: It only creates one user when I create a user in the browser.
     context "with good save / valid input" do
       before do
         post :create, user: Fabricate.attributes_for(:user)
