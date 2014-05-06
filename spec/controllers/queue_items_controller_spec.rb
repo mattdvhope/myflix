@@ -93,4 +93,65 @@ describe QueueItemsController do
       expect(response).to redirect_to sign_in_path      
     end
   end
+
+  describe "POST update_queue" do
+    context "with valid inputs" do
+      it "redirects to the my_queue_path / page" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, position: 1)
+        queue_item2 = Fabricate(:queue_item, user: alice, position: 2)
+        post :update_queue, queue_items: [{id: queue_item1.id, position: 2}, {id:queue_item2.id, position: 1}]
+        expect(response).to redirect_to my_queue_path
+      end
+      it "reorders the queue items" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, position: 1)
+        queue_item2 = Fabricate(:queue_item, user: alice, position: 2)
+        post :update_queue, queue_items: [{id: queue_item1.id, position: 2}, {id: queue_item2.id, position: 1}]
+        expect(alice.queue_items).to eq([queue_item2, queue_item1])
+      end
+      it "normalizes the position numbers" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, position: 1)
+        queue_item2 = Fabricate(:queue_item, user: alice, position: 2)
+        post :update_queue, queue_items: [{id: queue_item1.id, position: 3}, {id: queue_item2.id, position: 2}]
+        # require 'pry'; binding.pry
+        expect(queue_item1.reload.position).to eq(2) # We need 'reload' b/c in the 'update_queue' method, we're getting the QueueItem object from the db and assigning it to queue_item; for that queue_item we're doing 'update_attributes', but this queue_item is a local variable within this block; it does not impact queue_item1 & queue_item2 defined in the test; queue_item1 & queue_item2 don't know that the records have been changed in the db; so we have to do a 'relaod' to make sure they get the most recent value. The 'alice' will actually go to the db and retrieve the queue_items.  Since we don't have 'alice' with these two 'expect' test, we need to do the 'reload'.
+        expect(queue_item2.reload.position).to eq(1)
+        # This (below) is another way to write the 'expect'...
+        # expect(alice.queue_items.map(&:position)).to eq([1, 2])
+      end
+    end
+    context "with invalid inputs" do
+      it "redirects to the my_queue_path / page" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, position: 1)
+        queue_item2 = Fabricate(:queue_item, user: alice, position: 2)
+        post :update_queue, queue_items: [{id: queue_item1.id, position: 3.4}, {id: queue_item2.id, position: 2}]
+        expect(response).to redirect_to my_queue_path
+      end
+      it "sets the flash error message" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, position: 1)
+        queue_item2 = Fabricate(:queue_item, user: alice, position: 2)
+        post :update_queue, queue_items: [{id: queue_item1.id, position: 3.4}, {id: queue_item2.id, position: 2}]
+        expect(flash[:error]).to be_present
+      end
+      it "does not change the queue items" do # We need a 'transaction' here.  If one queue_item does not save properly, then ALL should be rolled back.
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, position: 1)
+        queue_item2 = Fabricate(:queue_item, user: alice, position: 2)
+        post :update_queue, queue_items: [{id: queue_item1.id, position: 3}, {id: queue_item2.id, position: 2.1}]
+        expect(queue_item1.reload.position).to eq(1)
+      end
+    end
+    context "with unauthenticated users"
+    context "with queue items that do not belong to the current user"
+  end
 end
