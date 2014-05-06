@@ -3,7 +3,7 @@ require 'spec_helper'
 describe QueueItem do
   it { should belong_to(:user) }
   it { should belong_to(:video) }
-  it { should validate_numericality_of(:position).only_integer }
+  it { should validate_numericality_of(:position).only_integer } # The queue_item fabricator must be generating actual numbers/integers for this (and other tests below) to pass.
 
   describe "#video_title" do
     it "returns the title of the associated video" do
