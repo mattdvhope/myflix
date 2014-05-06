@@ -37,7 +37,7 @@ describe QueueItem do
       review = Fabricate(:review, user: user, video: video, rating: 2)
       queue_item = Fabricate(:queue_item, user: user, video: video)
       queue_item.rating = 4
-      expect(Review.first.rating).to eq(4) # Using the Review model here is like doing a 'reload'.
+      expect(Review.first.rating).to eq(4) # Using the Review model here is like doing a 'reload'. This will force the retrieval of a record from the db.
     end
     it "clears the rating of the review if the review is present" do
       video = Fabricate(:video)

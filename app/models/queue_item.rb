@@ -18,7 +18,7 @@ class QueueItem < ActiveRecord::Base
   validates_numericality_of :position, {only_integer: true}
 
   def rating # This is a 'virtual attribute' for the queue_item model. For virtual attributes, we have to define the accessor methods ourselves (unlike with the actual attributes, which rails defines automatically).
-    review.rating if review
+    review.rating if review # 'review' here is the private method below.
   end
 
   def rating=(new_rating)
