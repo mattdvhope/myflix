@@ -52,9 +52,9 @@ feature "User interacts with the queue" do
   end
 
   # Alternative set_video_position for identifying the 'text_field_tag' in 'views/queue_items/index.html.haml' and making a 'data' attribute to refer to (must un-comment it there).
-  def set_video_position(video, position)
-    find("input[data-video-id='#{video.id}']").set(position)
-  end
+  # def set_video_position(video, position)
+  #   find("input[data-video-id='#{video.id}']").set(position)
+  # end
 
   # Alternative set_video_position, BUT in 'views/queue_items/index.html.haml', we have to replace 'data: {video_id: queue_item.video.id}' with 'id: "video_#{queue_item.video.id}"' ; This is less preferable b/c we need access to the 'id' attribute (which in many cases will be unavailable since it's being used for CSS, JS, etc).  We do need some kind of a unique identifier though for the spec.
   # def set_video_position(video, position)
