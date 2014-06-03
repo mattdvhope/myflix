@@ -19,10 +19,24 @@ Category.create(name: "Bible stories")
 
 matt = User.create(email: "matt@email.tv", password: "password", full_name: "Matt Malone")
 john = User.create(email: "john@email.tv", password: "password", full_name: "John Lapos")
-tim = User.create(email: "john@email.tv", password: "password", full_name: "Tim Owens")
+tim = User.create(email: "tim@test.tv", password: "password", full_name: "Tim Owens")
 
 Review.create(user: john, video: cpm, content: "I want to see it multiply!!", rating: 4)
 Review.create(user: matt, video: goliath, content: "What an amazing historical account!", rating: 2)
 Review.create(user: john, video: cross, content: "He went to the cross for me!", rating: 5)
 Review.create(user: matt, video: plant, content: "I want to see it grow!", rating: 1)
+
+QueueItem.create(user: matt, video: cpm, position: 1, rating: 2)
+QueueItem.create(user: matt, video: goliath, position: 2, rating: 4)
+QueueItem.create(user: john, video: cross, position: 1, rating: 1)
+QueueItem.create(user: john, video: plant, position: 2, rating: 3)
+QueueItem.create(user: tim, video: goliath, position: 1, rating: 2)
+QueueItem.create(user: tim, video: cross, position: 2, rating: 5)
+
+Relationship.create(leader: tim, follower: john)
+Relationship.create(leader: tim, follower: matt)
+Relationship.create(leader: john, follower: matt)
+Relationship.create(leader: john, follower: tim)
+Relationship.create(leader: matt, follower: tim)
+
 
