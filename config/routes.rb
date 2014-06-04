@@ -1,5 +1,7 @@
 Myflix::Application.routes.draw do
 
+  get 'relationships/index'
+
   root to: "pages#front" # Standard procedure to serve static pages: Make a 'pages' controller & have each of its pages (i.e., 'front') as an action for the 'pages' controller.
   get 'home', to: 'videos#index'
 
@@ -9,6 +11,9 @@ Myflix::Application.routes.draw do
     end
     resources :reviews, only: [:create]
   end
+
+  get 'people', to: 'relationships#index'
+  resources :relationships, only: [:create, :destroy]
 
   resources :categories, only: [:show]
   resources :queue_items, only: [:create, :destroy]

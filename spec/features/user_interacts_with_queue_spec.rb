@@ -33,7 +33,7 @@ feature "User interacts with the queue" do
   # Make sure these 6 methods are BELOW(outside of) the 'scenario'. The code above is pushed down to these methods.
   def add_video_to_queue(video)
     visit home_path
-    find("a[href='/videos/#{video.id}']").click # You can see this a[href]...etc by using 'inspect element' on a video icon on the home page.
+    click_on_video_on_home_page(video) # This method is in macros.rb
     click_link "+ My Queue"
   end
 

@@ -13,3 +13,7 @@ end
 def sign_out
   visit sign_out_path
 end
+
+def click_on_video_on_home_page(video)
+  find("a[href='/videos/#{video.id}']").click # You can see this a[href]...etc by using 'inspect element' on a video icon on the home page.
+end
