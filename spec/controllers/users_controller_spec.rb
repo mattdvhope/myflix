@@ -36,6 +36,23 @@ describe UsersController do
         expect(assigns(:user)).to be_instance_of(User)
       end
     end
+    context "sending emails" do
+
+      after { ActionMailer::Base.deliveries.clear } # With most specs, the db will be rolled back to its initial state--but not with ActionMailer b/c we're sending out emails. When you run rspec, email sending is added to the ActionMailer::Base.deliveries queue; this is not part of the db transaction, so this will not be rolled back.  Doing this 'after' will cause the ActionMailer::Base.deliveries queue to be restored each time. After each spec runs, we'll clear the ActionMailer. 'after' means that the code within a block will run after each of the specs.
+
+      it "sends out an email to the user with valid inputs" do
+        post :create, user: { email: "john@test.com", password: "password", full_name: "John Smith" }
+        expect(ActionMailer::Base.deliveries.last.to).to eq(["john@test.com"]) # the 'to' after 'last' should be an array b/c we can an email to multiple recipients.
+      end
+      it "sends out an email containing the user's name with valid inputs" do
+        post :create, user: { email: "john@test.com", password: "password", full_name: "John Smith" }
+        expect(ActionMailer::Base.deliveries.last.body).to include("John Smith")
+      end
+      it "does not send out email with invalid inputs" do
+        post :create, user: { email: "john@test.com" }
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
   end
   describe "GET show" do
     it_behaves_like "requires sign in" do # in spec/support/shared_examples.rb
