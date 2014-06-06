@@ -8,6 +8,7 @@ Myflix::Application.configure do
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.default_url_options = { host: 'localhost:3000' } # This is to allow 'password_reset_url(@user.token)' to work in 'send_forgot_password.html.haml'
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
