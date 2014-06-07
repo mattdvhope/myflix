@@ -29,7 +29,7 @@ Myflix::Application.routes.draw do
   resources :users, only: [:create, :show]
   resources :sessions, only: [:create]
 
-  get 'forgot_password', to: 'forgot_passwords#new'
+  get 'forgot_password', to: 'forgot_passwords#new' # The only reason we have a 'forgot_passwords' controller is that we have a place to hold these three actions: 'new', 'create' & 'confirm'
   resources :forgot_passwords, only: [:create] # a 'virtual' resource; no model for this; we don't want to jam the 'new' and 'create' action into the sessions controller; this is a common rails practice to separate actions like these; if we'd jammed these into the 'sessions' controller, it would be to confusing and would likely get out of control.
   get 'forgot_password_confirmation', to: 'forgot_passwords#confirm'
   resources :password_resets, only: [:show, :create] # The 'show' action always expects a user id.  That will be '@user.token' here from 'send_forgot_password.html.haml'

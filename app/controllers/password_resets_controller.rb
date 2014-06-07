@@ -21,4 +21,6 @@ class PasswordResetsController < ApplicationController
     end
   end
 
+  # We don't need the 'expired_token' method here b/c rails will automatically go directly from 'routes.rb' to 'expired_token.html.haml'
+
 end
