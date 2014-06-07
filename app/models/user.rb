@@ -30,8 +30,6 @@ class User < ActiveRecord::Base
     !(self.follows?(another_user) || self == another_user) # think of the '!' as meaning 'unless' here.
   end
 
-  private
-
   def generate_token
     self.token = SecureRandom.urlsafe_base64
   end
