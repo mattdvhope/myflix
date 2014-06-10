@@ -42,7 +42,7 @@ describe PasswordResetsController do
         post :create, token: '12345', password: 'new_password'
         expect(flash[:success]).to be_present
       end
-      it "regenerates the user token" do # The prevents someone from optaining the user's token and then being able change the password anytime.
+      it "regenerates the user token" do # The prevents someone from optaining the user's token and then being able change the password anytime; we want this token to be short-lived.
         alice = Fabricate(:user, password: 'old_password')
         alice.update_column(:token, '12345')
         post :create, token: '12345', password: 'new_password'
@@ -50,7 +50,7 @@ describe PasswordResetsController do
       end
     end
     context "with invalid token" do # prevents someone from attacking the system
-      it "redirects to the expired token path" do
+      it "redirects to the expired token path" do # No user is created here.
         post :create, token: '12345', password: 'some_password'
         expect(response).to redirect_to expired_token_path
       end

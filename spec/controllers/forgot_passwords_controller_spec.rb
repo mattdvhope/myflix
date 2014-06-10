@@ -29,7 +29,7 @@ describe ForgotPasswordsController do
         post :create, email: 'tom@test.tv'
         expect(response).to redirect_to forgot_password_path
       end
-      it "shows and error message" do
+      it "shows an error message" do
         post :create, email: 'tom@test.tv'
         expect(flash[:error]).to eq("There is no user in the system with that email addresss.")
       end
