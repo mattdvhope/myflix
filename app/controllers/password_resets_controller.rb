@@ -12,7 +12,7 @@ class PasswordResetsController < ApplicationController
     user = User.where(token: params[:token]).first
     if user # we have a user b/c we have a valid token
       user.password = params[:password] # The user sets the new password.
-      user.generate_token # Method from 'user.rb' ; This is where we 'regenerate the user token'
+      user.generate_token # Method from 'user.rb' ; This is where we 'regenerate the user token' for security purposes.
       user.save
       flash[:success] = "Your password has been changed. Please sign in"
       redirect_to sign_in_path
