@@ -34,4 +34,6 @@ Myflix::Application.routes.draw do
   get 'forgot_password_confirmation', to: 'forgot_passwords#confirm'
   resources :password_resets, only: [:show, :create] # The 'show' action always expects a user id.  That will be '@user.token' here from 'send_forgot_password.html.haml'
   get 'expired_token', to: 'password_resets#expired_token'
+
+  resources :invitations, only: [:new]
 end
