@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140610122256) do
+ActiveRecord::Schema.define(version: 20140611081006) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20140610122256) do
   end
 
   create_table "invitations", force: true do |t|
-    t.integer  "inviter"
+    t.string   "inviter"
     t.string   "recipient_name"
     t.string   "recipient_email"
     t.text     "message"
