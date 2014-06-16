@@ -32,6 +32,13 @@ describe InvitationsController do
         post :create, invitation: { recipient_name: "Tom Jones", recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }
         expect(Invitation.count).to eq(1)
       end
+      it "fills in the user_who_invites column with inviter/user" do
+        inviter = Fabricate(:user)
+        set_current_user(inviter)
+        post :create, invitation: { recipient_name: "Tom Jones", recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }
+        invitation = Invitation.first
+        expect(invitation.user_who_invites).to eq(inviter)
+      end
       it "sends an email to the recipient" do
         set_current_user
         post :create, invitation: { recipient_name: "Tom Jones", recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }

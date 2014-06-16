@@ -15,5 +15,6 @@ module Myflix
       g.orm :active_record
       g.template_engine :haml
     end
+    config.autoload_paths << "#{Rails.root}/lib" # autoload_paths is an array; this allows us to access the 'lib' directory in our models (i.e., for 'include Tokenable', etc).
   end
 end
