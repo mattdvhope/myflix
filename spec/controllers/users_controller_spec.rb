@@ -21,6 +21,26 @@ describe UsersController do
       it "redirects to the sign-in page" do
         expect(response).to redirect_to sign_in_path
       end
+      it "makes the user follow the inviter" do # This (& the next 2 tests) tests that whenever a new user becomes a new user as a result of an invitation, he will automatically follow that inviter.
+        alice = Fabricate(:user)
+        invitation = Fabricate(:invitation, user_who_invites: alice, recipient_email: 'test@email.com')
+        post :create, user: { email: 'test@email.com', password: 'password', full_name: 'Test Man' }, invitation_token: invitation.token
+        test_man = User.where(email: 'test@email.com').first
+        expect(test_man.follows?(alice)).to be_true
+      end
+      it "makes the inviter follow the user" do
+        alice = Fabricate(:user)
+        invitation = Fabricate(:invitation, user_who_invites: alice, recipient_email: 'test@email.com')
+        post :create, user: { email: 'test@email.com', password: 'password', full_name: 'Test Man' }, invitation_token: invitation.token
+        test_man = User.where(email: 'test@email.com').first
+        expect(alice.follows?(test_man)).to be_true
+      end
+      it "expires the invitation upon acceptance" do # We want to make sure that the user can only accept the invitation once.
+        alice = Fabricate(:user)
+        invitation = Fabricate(:invitation, user_who_invites: alice, recipient_email: 'test@email.com')
+        post :create, user: { email: 'test@email.com', password: 'password', full_name: 'Test Man' }, invitation_token: invitation.token
+        expect(Invitation.first.token).to be_nil # We could also say, expect(invitation.reload.token)...
+      end
     end
     context "with bad save / invalid input" do
       before do
@@ -63,6 +83,28 @@ describe UsersController do
       set_current_user(alice) # in spec/support/macros.rb ; NOTE: With this spec, we actually don't care who the current user is (we really don't need 'alice' & we can put the 'alice' variable-assignment below this line).
       get :show, id: alice.id
       expect(assigns(:user)).to eq(alice)
+    end
+  end
+
+  describe "GET new_with_invitation_token" do
+    it "renders the new view template" do
+      invitation = Fabricate(:invitation) # This will generate a token.
+      get :new_with_invitation_token, token: invitation.token
+      expect(response).to render_template :new # We want to render the :new view template rather than the default named template from this method.
+    end
+    it "sets @user with invitation recipient's email" do # We want the email address on the Register page to be pre-filled with the invitation recipient's email.
+      invitation = Fabricate(:invitation) # This will generate a token.
+      get :new_with_invitation_token, token: invitation.token
+      expect(assigns(:user).email).to eq(invitation.recipient_email)
+    end
+    it "sets @invitation_token" do # The users controller needs to set this for users/new.html/haml
+      invitation = Fabricate(:invitation) # This will generate a token.
+      get :new_with_invitation_token, token: invitation.token
+      expect(assigns(:invitation_token)).to eq(invitation.token)
+    end
+    it "redirects to expired token page for invalid tokens" do
+      get :new_with_invitation_token, token: 'abcdefg'
+      expect(response).to redirect_to expired_token_path
     end
   end
 end

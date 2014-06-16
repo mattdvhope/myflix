@@ -8,4 +8,5 @@
           = f.email_field :email, label: "Email Address"
           = f.password_field :password
           = f.text_field :full_name, label: "Full Name"
+          = hidden_field_tag :invitation_token, @invitation_token # We put this here b/c we need to have a way to identify the invitation (and the inviter) for this potential new user who wants to Register...he needs to know who has invited him. We DON'T use f.hidden_field_tag here b/c we don't want the invitation token to be hashed under this new user.
           = f.submit "Sign Up"

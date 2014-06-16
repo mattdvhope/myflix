@@ -22,5 +22,7 @@ feature 'User Resets Password' do
     fill_in "Password", with: "new_password"
     click_button "Sign in"
     expect(page).to have_content("Welcome, #{alice.full_name}")
+
+    clear_email # Use this to prevent some of the tests from leaking out emails.
   end
 end

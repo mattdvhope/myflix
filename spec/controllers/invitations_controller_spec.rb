@@ -19,6 +19,9 @@ describe InvitationsController do
     end
 
     context "with valid input" do
+
+      after { ActionMailer::Base.deliveries.clear } # Need this b/c in the "with valid input" context, these specs all send out emails, thus making the ActionMailer::Base filled with emails. Therefore, here, we have to clear out the ActionMailer::Base. With this, after each spec, the email queue will be cleared.
+
       it "redirects to the invitation new page" do # to invite a new user if desired
         set_current_user
         post :create, invitation: { recipient_name: "Tom Jones", recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }
@@ -46,10 +49,26 @@ describe InvitationsController do
         post :create, invitation: { recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }
         expect(response).to render_template :new
       end
-      it "does not create an invitation"
-      it "does not send out an email"
-      it "sets the flash error message"
-      it "sets @invitation" # Since it will render the 'new' template, we have to make sure we have @invitation instance variable set.
+      it "does not create an invitation" do # We have the validations in 'invitation.rb', so this invitation won't be created.
+        set_current_user
+        post :create, invitation: { recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }
+        expect(Invitation.count).to eq(0)
+      end
+      it "does not send out an email" do
+        set_current_user
+        post :create, invitation: { recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+      it "sets the flash error message" do
+        set_current_user
+        post :create, invitation: { recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }
+        expect(flash[:error]).to be_present
+      end
+      it "sets @invitation" do # Since it will render the 'new' template, we have to make sure we have @invitation instance variable set.
+        set_current_user
+        post :create, invitation: { recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }
+        expect(assigns(:invitation)).to be_present # Must change the 'invitation' local variable into @invitation.
+      end
     end
   end
 end
