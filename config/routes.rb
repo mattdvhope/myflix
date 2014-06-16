@@ -22,7 +22,8 @@ Myflix::Application.routes.draw do
   get 'my_queue', to: 'queue_items#index'
 
   get 'ui(/:action)', controller: 'ui'
-  get 'register', to: "users#new"
+  get 'register', to: "users#new" # Unlike the registration below (get 'register/:token', etc...), this registration was not in response to an invitation.
+  get 'register/:token', to: "users#new_with_invitation_token", as: 'register_with_token' # ':token' will be a request parameter. When we do register_with_token_url(@invitation) and pass in a parameter, it will take the token value and become part of the url.
   get 'sign_in', to: "sessions#new"
   get 'sign_out', to: "sessions#destroy"
 
@@ -33,5 +34,8 @@ Myflix::Application.routes.draw do
   resources :forgot_passwords, only: [:create] # a 'virtual' resource; no model for this; we don't want to jam the 'new' and 'create' action into the sessions controller; this is a common rails practice to separate actions like these; if we'd jammed these into the 'sessions' controller, it would be to confusing and would likely get out of control.
   get 'forgot_password_confirmation', to: 'forgot_passwords#confirm'
   resources :password_resets, only: [:show, :create] # The 'show' action always expects a user id.  That will be '@user.token' here from 'send_forgot_password.html.haml'
-  get 'expired_token', to: 'password_resets#expired_token'
+  get 'expired_token', to: 'pages#expired_link'
+
+  resources :invitations, only: [:new, :create]
+
 end
