@@ -11,6 +11,7 @@ gem 'sass-rails'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'sidekiq'
+gem 'unicorn'
 
 group :development do
   gem 'sqlite3'
