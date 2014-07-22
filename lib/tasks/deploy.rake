@@ -3,7 +3,7 @@ require 'paratrooper'
 namespace :deploy do
   desc 'Deploy app in staging environment'
   task :staging do
-    deployment = Paratrooper::Deploy.new("arcane-dusk-8223", tag: 'staging')
+    deployment = Paratrooper::Deploy.new("aqueous-badlands-4150-staging", tag: 'staging')
 
     deployment.deploy
   end
