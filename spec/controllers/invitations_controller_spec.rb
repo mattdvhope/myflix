@@ -20,7 +20,7 @@ describe InvitationsController do
 
     context "with valid input" do
 
-      after { ActionMailer::Base.deliveries.clear } # Need this b/c in the "with valid input" context, these specs all send out emails, thus making the ActionMailer::Base filled with emails. Therefore, here, we have to clear out the ActionMailer::Base. With this, after each spec, the email queue will be cleared.
+      after { ActionMailer::Base.deliveries.clear } # Need this b/c in the "with valid input" context, these specs all send out emails, thus making the ActionMailer::Base filled with emails. Therefore, here, we have to clear out the ActionMailer::Base. With this, after each spec, the email queue will be cleared, allowing the "with invalid input" test to pass.
 
       it "redirects to the invitation new page" do # to invite a new user if desired
         set_current_user
@@ -51,7 +51,7 @@ describe InvitationsController do
       end
     end
     context "with invalid input" do # For 'invitations', we'll require all 3 fields to be present in invitation.rb
-      it "renders the new template" do
+      it "renders the :new template" do
         set_current_user
         post :create, invitation: { recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }
         expect(response).to render_template :new

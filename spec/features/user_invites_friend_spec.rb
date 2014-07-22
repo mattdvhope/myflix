@@ -21,7 +21,7 @@ feature 'User invites a friend' do
     fill_in "Friend's Email Address", with: "tom@example.tv"
     fill_in "Text Message", with: "Please join MyFlix."
     click_button "Send Invitation"
-    sign_out # Signing out here ensures that we'll start a new session for the invitee (& not be in the session of the inviter).
+    sign_out # Signing out here ensures that we'll start a new session for the invitee (& not be in the session of the inviter). From macros.rb
   end
 
   def friend_accepts_invitation
