@@ -10,7 +10,6 @@ class PasswordResetsController < ApplicationController
 
   def create
     user = User.where(token: params[:token]).first # We DON'T need ':id' here b/c the token is NOT coming from a resources path helper.  Instead, token is the name of the element from the form that contains the token as its value (from the 'hidden_field-tag :token, @token' in 'show.html.haml').  Token is now available to us (it's already here), unlike at the start of the show method above which had needed the token to come from a resources path helper.
-# binding.pry
     if user # we have a user b/c we have a valid token
       user.password = params[:password] # The user sets the new password.
       user.generate_token # Method from 'user.rb' ; This is where we 'regenerate the user token' for security purposes.

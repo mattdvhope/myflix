@@ -12,6 +12,10 @@ Myflix::Application.routes.draw do
     resources :reviews, only: [:create]
   end
 
+  namespace :admin do
+    resources :videos, only: [:new, :create] # We need the :create to have access to the `admin_videos_path' method for http://localhost:3000/admin/videos/new
+  end
+
   get 'people', to: 'relationships#index'
   resources :relationships, only: [:create, :destroy]
 
