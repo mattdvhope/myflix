@@ -9,6 +9,9 @@
 # "Put in seed data about videos... Southpark, etc are in public/tmp/"
 
 cpm = Video.create(title: "Church Planting Movement", description: "We learn how to multiply churches.", small_cover: "/tmp/cpm.jpg", large_cover: "/tmp/cpm_large.jpg", category_id: 1)
+
+# cpm = Video.create(title: "Church Planting Movement", description: "We learn how to multiply churches.", small_cover: File.open("/tmp/cpm.jpg"), large_cover: File.open("/tmp/cpm_large.jpg"), category_id: 1)
+
 goliath = Video.create(title: "David & Goliath", description: "David was a great leader!", small_cover: "/tmp/goliath.jpg", large_cover: "/tmp/goliath_large.jpg", category_id: 3)
 cross = Video.create(title: "Jesus going to the Cross", description: "Jesus was the ultimate leader.", small_cover: "/tmp/jesus.jpg", large_cover: "/tmp/jesus_large.jpg", category_id: 2)
 plant = Video.create(title: "Planting churches", description: "Learning how to plant a seed and watch it grow.", small_cover: "/tmp/planting.jpg", large_cover: "/tmp/planting_large.jpg", category_id: 1)
@@ -17,7 +20,7 @@ Category.create(name: "Church planting")
 Category.create(name: "About Jesus")
 Category.create(name: "Bible stories")
 
-matt = User.create(email: "matt@email.tv", password: "password", full_name: "Matt Malone")
+matt = User.create(email: "matt@email.tv", password: "password", full_name: "Matt Malone", admin: true)
 john = User.create(email: "john@email.tv", password: "password", full_name: "John Lapos")
 tim = User.create(email: "tim@test.tv", password: "password", full_name: "Tim Owens")
 
