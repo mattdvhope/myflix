@@ -2,6 +2,10 @@ class Video < ActiveRecord::Base
 
   belongs_to :category
   has_many :reviews, ->{ order("created_at DESC") }
+
+  mount_uploader :large_cover, LargeCoverUploader # The 'mount_uploader' method is provided by the CarrierWave gem. The 'LargeCoverUploader' class is in 'app/uploaders/....'
+  mount_uploader :small_cover, SmallCoverUploader
+
   validates_presence_of :title, :description
 
   # Write tests BEFORE you write this method w/ several test cases: 1. Where you cannot find a single video; 2. Where you can find one; 3. Where you can find multiple videos.

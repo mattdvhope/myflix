@@ -32,4 +32,6 @@ class User < ActiveRecord::Base
     !(self.follows?(another_user) || self == another_user) # think of the '!' as meaning 'unless' here.
   end
 
+  # the #admin? method is now available b/c we've added the column 'admin' (boolean) to the 'users' table.
+
 end
