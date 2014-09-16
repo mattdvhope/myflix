@@ -7,12 +7,12 @@ feature 'Admin adds new video' do
     sign_in(admin)
     visit new_admin_video_path
 
-    fill_in "Title", with: "Monk"
+    fill_in "Title", with: "Amazon"
     select "Dramas", from: "Category" # From the select box, "Category" on the browser. In this case, "Category" is a selector, which is why we say 'select' here for this feature test.
     fill_in "Description", with: "SF detective"
     # save_and_open_page # This will open a simple version of the page in my computer's default browser.
-    attach_file "Large cover", "/Users/matthewmalone/Sites/myflix/spec/support/uploads/monk_large.png" # Don't forget the file suffix, which in this case is '.png'.  Make sure "Large cover" is spelled exactly correctly, including correct cases.
-    attach_file "Small cover", "/Users/matthewmalone/Sites/myflix/spec/support/uploads/monk.png"
+    attach_file "Large cover", "/Users/matthewmalone/Sites/myflix/spec/support/uploads/amazon_large.png" # Don't forget the file suffix, which in this case is '.png'.  Make sure "Large cover" is spelled exactly correctly, including correct cases.
+    attach_file "Small cover", "/Users/matthewmalone/Sites/myflix/spec/support/uploads/amazon.png"
     fill_in "Video URL", with: "http://www.example.com/my_video.mp4"
     click_button "Add Video"
 
@@ -21,7 +21,7 @@ feature 'Admin adds new video' do
     sign_in # From spec/support/macros.rb
 
     visit video_path(Video.first) # This is the show page for a selected video.  The 'Video.first' is the first video in the db--entered in above via the 'fill_in "Video URL"...etc'.
-    expect(page).to have_selector("img[src='/uploads/video/large_cover/1/monk_large.png']") # the large cover / Find this correct 'src=' format by doing 'Inspect Element' on the large_cover on this page in the browser.
+    expect(page).to have_selector("img[src='/uploads/video/large_cover/1/amazon_large.png']") # the large cover / Find this correct 'src=' format by doing 'Inspect Element' on the large_cover on this page in the browser.
     expect(page).to have_selector("a[href='http://www.example.com/my_video.mp4']") # the 'Watch Now' button / the video URL
   end
 end
