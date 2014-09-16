@@ -16,7 +16,7 @@ gem "sentry-raven"
 gem 'paratrooper'
 gem 'carrierwave'
 gem 'mini_magick'
-gem 'fog'
+gem 'fog' # For Amazon S3
 
 group :development do
   gem 'sqlite3'
