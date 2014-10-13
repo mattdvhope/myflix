@@ -17,6 +17,8 @@ gem 'paratrooper'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog' # For Amazon S3
+gem 'stripe'
+gem 'figaro' # creates the 'config/application.yml' file (in gitignore)
 
 group :development do
   gem 'sqlite3'
@@ -29,7 +31,6 @@ end
 group :production do
   gem 'pg'
   gem 'rails_12factor'
-  gem 'figaro'
 end
 
 group :development, :test do

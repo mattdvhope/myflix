@@ -1,12 +1,44 @@
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
+</script>
+
+= javascript_include_tag 'payment' # Include the js file 'assets/javascripts/payment.js' in this 'new.html.haml' view template
+
 %section.register.container
   .row
     .col-sm-10.col-sm-offset-1
       %fieldset
-        = bootstrap_form_for @user do |f|
+        = bootstrap_form_for @user, html: { id: "payment-form"} do |f|
           %header
             %h1 Register
           = f.email_field :email, label: "Email Address"
           = f.password_field :password
           = f.text_field :full_name, label: "Full Name"
           = hidden_field_tag :invitation_token, @invitation_token # We put this here b/c we need to have a way to identify the invitation (and the inviter) for this potential new user who wants to Register...he needs to know who has invited him. We DON'T use f.hidden_field_tag here b/c we don't want the invitation token to be hashed under this new user.
-          = f.submit "Sign Up"
+          %fieldset.credit_card
+            %span.payment-errors
+            .form-group
+              %label.control-label.col-sm-2 Credit Card Number
+              .col-sm-4
+                %input.form-control(type="text" data-stripe="number")
+            %br/
+            %br/
+            .form-group
+              %label.control-label.col-sm-2 Security Code
+              .col-sm-4
+                %input.form-control(type="text" data-stripe="cvc")
+            %br/
+            %br/
+            .form-group
+              %label.control-label.col-sm-2 Expiration
+              .col-sm-4
+                = select_month(Date.today, {add_month_numbers: true}, class: 'form-control', data: {stripe: "exp-month"}, name: nil)
+              .col-sm-2
+                = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, class: 'form-control', data: {stripe: "exp-year"}, name: nil)
+            %br/
+            %br/
+          %fieldset.credit_card
+            .controls
+              %input(type="submit" value="Sign Up" class="btn btn-default")
+          / %script.stripe-button{"data-amount" => "999", "data-currency" => "usd", "data-description" => "Videos ($9.99)", "data-image" => "/tmp/goliath.jpg", "data-key" => "#{ENV['STRIPE_PUBLISHABLE_KEY']}", "data-name" => "MyFlix Sign Up Charge", :src => "https://checkout.stripe.com/checkout.js"} :cdata
