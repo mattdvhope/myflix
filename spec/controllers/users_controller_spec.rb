@@ -15,7 +15,9 @@ describe UsersController do
       before do
         post :create, user: Fabricate.attributes_for(:user)
       end                          # .attributes_for(:user) does NOT save to the DB.
-      it "creates the user" do
+      it "creates the user", :vcr do
+        StripeWrapper::Charge.stub(:create)
+        # StripeWrapper::Charge.allow(User).to receive(:create)
         expect(User.count).to eq(1)
       end
       it "redirects to the sign-in page" do
