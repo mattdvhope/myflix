@@ -5,6 +5,7 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/email/rspec'
 require 'sidekiq/testing/inline' # Allows passing of rspec testing with ActionMailer::Base...(makes testing inline; allows for the '#delay' method in the controllers).
+require 'vcr' # Use vcr to make the tests involving third-party APIs (i.e., in spec/models/stripe_wrapper_spec.rb) run faster by enabling them to not need to hit the remote API server.  Instead, it only hits the server once and then records all that in 'spec/cassettes/...' for use in future tests.  This vcr code here came from https://www.relishapp.com/vcr/vcr/v/2-9-0/docs/test-frameworks/usage-with-rspec-metadata
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -14,6 +15,12 @@ require 'sidekiq/testing/inline' # Allows passing of rspec testing with ActionMa
 # end with _spec.rb. You can configure this pattern with with the --pattern
 # option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/cassettes'
+  c.hook_into :webmock
+  c.configure_rspec_metadata!
+end
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -41,4 +48,5 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+  config.treat_symbols_as_metadata_keys_with_true_values = true # Use with vcr
 end
