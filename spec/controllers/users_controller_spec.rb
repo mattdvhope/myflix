@@ -18,6 +18,7 @@ describe UsersController do
       it "creates the user", :vcr do
         StripeWrapper::Charge.stub(:create)
         # StripeWrapper::Charge.allow(User).to receive(:create)
+        post :create, user: Fabricate.attributes_for(:user)
         expect(User.count).to eq(1)
       end
       it "redirects to the sign-in page" do
