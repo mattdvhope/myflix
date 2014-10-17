@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       handle_invitation
-      charge = StripeWrapper::Charge.create(
+      StripeWrapper::Charge.create(
         :amount => 999,
         :card => params[:stripeToken],
         :description => "Sign up charge for #{@user.email}"
