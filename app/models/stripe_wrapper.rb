@@ -2,7 +2,7 @@ module StripeWrapper
   class Charge
     def self.create(options={})
       StripeWrapper.set_api_key
-      response = Stripe::Charge.create(
+      Stripe::Charge.create(
         amount: options[:amount],
         currency: 'usd',
         card: options[:card],
