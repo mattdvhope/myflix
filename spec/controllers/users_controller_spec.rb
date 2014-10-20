@@ -12,16 +12,17 @@ describe UsersController do
   describe "POST create" do
     # before { User.first.destroy } # I wrote this here b/c for some reason it Fabricates an extra User object.  I don't yet know why.  In the UI, it works fine: It only creates one user when I create a user in the browser.
     context "with good save / valid input" do
+      let(:charge) { double(:charge) } # This provides the doubled 'charge' that should be returned from the stubbed 'create' method below: StripeWrapper::Charge.should_receive(:create).and_return(charge)
+
       before do
-        post :create, user: Fabricate.attributes_for(:user)
-      end                          # .attributes_for(:user) does NOT save to the DB.
-      it "creates the user", :vcr do
-        StripeWrapper::Charge.stub(:create)
-        # StripeWrapper::Charge.allow(User).to receive(:create)
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+      end
+      it "creates the user" do
         post :create, user: Fabricate.attributes_for(:user)
         expect(User.count).to eq(1)
       end
       it "redirects to the sign-in page" do
+        post :create, user: Fabricate.attributes_for(:user)
         expect(response).to redirect_to sign_in_path
       end
       it "makes the user follow the inviter" do # This (& the next 2 tests) tests that whenever a new user becomes a new user as a result of an invitation, he will automatically follow that inviter.
@@ -64,10 +65,12 @@ describe UsersController do
       after { ActionMailer::Base.deliveries.clear } # With most specs, the db will be rolled back to its initial state--but not with ActionMailer b/c we're sending out emails. When you run rspec, email sending is added to the ActionMailer::Base.deliveries queue; this is not part of the db transaction, so this will not be rolled back.  Doing this 'after' will cause the ActionMailer::Base.deliveries queue to be restored each time. After each spec runs, we'll clear the ActionMailer. 'after' means that the code within a block will run after each of the specs.
 
       it "sends out an email to the user with valid inputs" do
+        StripeWrapper::Charge.should_receive(:create)
         post :create, user: { email: "john@test.com", password: "password", full_name: "John Smith" }
         expect(ActionMailer::Base.deliveries.last.to).to eq(["john@test.com"]) # the 'to' after 'last' should be an array b/c we can an email to multiple recipients.
       end
       it "sends out an email containing the user's name with valid inputs" do
+        StripeWrapper::Charge.should_receive(:create)
         post :create, user: { email: "john@test.com", password: "password", full_name: "John Smith" }
         expect(ActionMailer::Base.deliveries.last.body).to include("John Smith")
       end
