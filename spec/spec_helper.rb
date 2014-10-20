@@ -7,6 +7,8 @@ require 'capybara/email/rspec'
 require 'sidekiq/testing/inline' # Allows passing of rspec testing with ActionMailer::Base...(makes testing inline; allows for the '#delay' method in the controllers).
 require 'vcr' # Use vcr to make the tests involving third-party APIs (i.e., in spec/models/stripe_wrapper_spec.rb) run faster by enabling them to not need to hit the remote API server.  Instead, it only hits the server once and then records all that in 'spec/cassettes/...' for use in future tests.  This vcr code here came from https://www.relishapp.com/vcr/vcr/v/2-9-0/docs/test-frameworks/usage-with-rspec-metadata
 
+Capybara.server_port = 52662 # In 'test.rb', make sure the local host is 52662 --> config.action_mailer.default_url_options = { host: 'localhost:52662' } ... or another (preferably 5-digit port number; make sure whatever port number you choose is not being used already; only ports 1-65535 exist; most likely 5 digit ports will be available, especially if your port consists of random numbers).
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -17,6 +19,7 @@ require 'vcr' # Use vcr to make the tests involving third-party APIs (i.e., in s
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 VCR.configure do |c|
+  c.ignore_localhost = true # After loading in gem 'selenium-webdriver', type this in. It will prevent vcr's default hook into every request (see..  https://www.relishapp.com/vcr/vcr/v/2-3-0/docs/configuration/ignore-request).
   c.cassette_library_dir = 'spec/cassettes'
   c.hook_into :webmock
   c.configure_rspec_metadata!
@@ -41,7 +44,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false # Make this false when using: gem 'database_cleaner'
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
@@ -49,4 +52,23 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
   config.treat_symbols_as_metadata_keys_with_true_values = true # Use with vcr
+  config.before(:suite) do # This line and down comes from:  http://devblog.avdi.org/2012/08/31/configuring-database_cleaner-with-rails-rspec-capybara-and-selenium/
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, :js => true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end
