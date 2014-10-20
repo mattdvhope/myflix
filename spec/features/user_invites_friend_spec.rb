@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'User invites a friend' do
-  scenario 'User successfully invites friend and invitation is accepted' do
+  scenario 'User successfully invites friend and invitation is accepted', { js: true, vcr: true } do # Be sure to have the correct Capybara.server_port (i.e., 52622) in 'spec_helper.rb' and 'test.rb'
     alice = Fabricate(:user)
     sign_in(alice)
 
@@ -25,10 +25,15 @@ feature 'User invites a friend' do
   end
 
   def friend_accepts_invitation
+    # StripeWrapper::Charge.should_receive(:create)
     open_email "tom@example.tv" # We're using the capybara-email gem here.
     current_email.click_link "Accept this invitation" # This will take us to the Register page with the email field already pre-filled.
     fill_in "Password", with: "password"
     fill_in "Full Name", with: "Tom Smith"
+    fill_in "Credit Card Number", with: "4242424242424242"   # After we set up the Credit card part of the sign up form, we have to put in this line (and subsequent lines pertaining to the Credit Card sign up).
+    fill_in "Security Code", with: "123"
+    select "7 - July", from: "date_month" # The 'date_month' syntax comes from the id when you select this form element in the browser.
+    select "2018", from: "date_year"      # The 'date_year' syntax comes from the id when you select this form element in the browser.
     click_button "Sign Up" # This will take us to the sign_in page.
   end
 
