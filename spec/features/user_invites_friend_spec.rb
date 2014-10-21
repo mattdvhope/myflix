@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'User invites a friend' do
-  scenario 'User successfully invites friend and invitation is accepted', { js: true, vcr: true } do # Be sure to have the correct Capybara.server_port (i.e., 52622) in 'spec_helper.rb' and 'test.rb'
+  scenario 'User successfully invites friend and invitation is accepted', { js: true, vcr: true } do # Be sure to have 'js: true' if you're using js to avoid the "You must supply either a card or a customer id" rspec failure ; Also, be sure to have the correct Capybara.server_port (i.e., 52622) in 'spec_helper.rb' and 'test.rb'
     alice = Fabricate(:user)
     sign_in(alice)
 
@@ -32,8 +32,8 @@ feature 'User invites a friend' do
     fill_in "Full Name", with: "Tom Smith"
     fill_in "Credit Card Number", with: "4242424242424242"   # After we set up the Credit card part of the sign up form, we have to put in this line (and subsequent lines pertaining to the Credit Card sign up).
     fill_in "Security Code", with: "123"
-    select "7 - July", from: "date_month" # The 'date_month' syntax comes from the id when you select this form element in the browser.
-    select "2018", from: "date_year"      # The 'date_year' syntax comes from the id when you select this form element in the browser.
+    select "7 - July", from: "date_month" # The 'date_month' syntax comes from the id when you select this form element in the browser, using 'inspect element.
+    select "2018", from: "date_year"      # The 'date_year' syntax comes from the id when you select this form element in the browser, using 'inspect element.
     click_button "Sign Up" # This will take us to the sign_in page.
   end
 
