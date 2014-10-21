@@ -19,12 +19,14 @@ Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
           %fieldset.credit_card
             %span.payment-errors
             .form-group
+              / For these lines (immediately below), we need to connect the "credit-card-number" label with '#credit-card-number' ; Otherwise, we'll get the 'Unable to find field Credit Card Number' rspec failure. This enables Capybara to associate a field's label with the actual input field.
               %label.control-label.col-sm-2(for="credit-card-number") Credit Card Number
               .col-sm-4
                 %input.form-control#credit-card-number(type="text" data-stripe="number")
             %br/
             %br/
             .form-group
+              / For these lines (immediately below), we need to connect the "security-code" label with '#security-code' ; Otherwise, we'll get the 'Unable to find field Security Code' rspec failure. This enables Capybara to associate a field's label with the actual input field.
               %label.control-label.col-sm-2(for="security-code") Security Code
               .col-sm-4
                 %input.form-control#security-code(type="text" data-stripe="cvc")
@@ -41,4 +43,4 @@ Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
           %fieldset.credit_card
             .controls
               %input(type="submit" value="Sign Up" class="btn btn-default")
-          / %script.stripe-button{"data-amount" => "999", "data-currency" => "usd", "data-description" => "Videos ($9.99)", "data-image" => "/tmp/goliath.jpg", "data-key" => "#{ENV['STRIPE_PUBLISHABLE_KEY']}", "data-name" => "MyFlix Sign Up Charge", :src => "https://checkout.stripe.com/checkout.js"} :cdata
+              / When user clicks on "Sign up", the js grabs the card info from the input & select fields and sends it to the Stripe server. If any of these fields are not valid, it will not hit the controller at all, therefore if it hits the controller we can be sure the the credit card info is valid, but it's still possible that if we attempt the actual charge, the card can still be declined.  So, in 'users_controller_spec.rb', we're testing "valid personal info and declined card".
