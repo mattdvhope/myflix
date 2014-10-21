@@ -19,7 +19,7 @@ Capybara.server_port = 52662 # In 'test.rb', make sure the local host is 52662 -
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 VCR.configure do |c|
-  c.ignore_localhost = true # After loading in gem 'selenium-webdriver', type this in. It will prevent vcr's default hook into every request (see..  https://www.relishapp.com/vcr/vcr/v/2-3-0/docs/configuration/ignore-request).
+  c.ignore_localhost = true # After loading in gem 'selenium-webdriver', type this in. It will prevent vcr's default hook/default cassette-recording into http every request to the local host (see..  https://www.relishapp.com/vcr/vcr/v/2-3-0/docs/configuration/ignore-request).
   c.cassette_library_dir = 'spec/cassettes'
   c.hook_into :webmock
   c.configure_rspec_metadata!
@@ -44,7 +44,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = false # Make this false when using: gem 'database_cleaner'
+  config.use_transactional_fixtures = false # Make this 'false' when using: gem 'database_cleaner' and add features below from Avdi Grimm's blog. Also, after adding gem 'database_cleaner', you may have to delete some vcr cassettes b/c js (maybe) was not true before.
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
