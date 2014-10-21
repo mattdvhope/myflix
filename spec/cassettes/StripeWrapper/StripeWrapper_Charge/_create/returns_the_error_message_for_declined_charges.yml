@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 20 Oct 2014 10:24:57 GMT
+      - Tue, 21 Oct 2014 09:09:18 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
@@ -45,7 +45,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - 3fd33372-e3b1-4ec3-8dfd-9c34aa5b89ac
+      - f81fddf4-de1f-485c-849f-693c2116153a
       Stripe-Version:
       - '2014-09-08'
       Strict-Transport-Security:
@@ -54,14 +54,14 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_14pdLRLSkqll2z4UR8k0dLk4",
+          "id": "tok_14pydmLSkqll2z4UvmHZLiM2",
           "livemode": false,
-          "created": 1413800697,
+          "created": 1413882558,
           "used": false,
           "object": "token",
           "type": "card",
           "card": {
-            "id": "card_14pdLRLSkqll2z4UAiIcvYJI",
+            "id": "card_14pydmLSkqll2z4Uy3ZyqDYh",
             "object": "card",
             "last4": "0002",
             "brand": "Visa",
@@ -82,13 +82,13 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Mon, 20 Oct 2014 10:24:57 GMT
+  recorded_at: Tue, 21 Oct 2014 09:09:18 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=999&currency=usd&card=tok_14pdLRLSkqll2z4UR8k0dLk4&description=an%20invalid%20charge
+      string: amount=999&currency=usd&card=tok_14pydmLSkqll2z4UvmHZLiM2&description=an%20invalid%20charge
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -114,7 +114,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 20 Oct 2014 10:24:59 GMT
+      - Tue, 21 Oct 2014 09:09:20 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
@@ -128,7 +128,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - 671ab2bd-5bb3-46ee-822d-365ad281a246
+      - c4dfbc41-5471-4d7b-8d2e-e90d8c82ac1d
       Stripe-Version:
       - '2014-09-08'
       Strict-Transport-Security:
@@ -141,9 +141,9 @@ http_interactions:
             "message": "Your card was declined.",
             "type": "card_error",
             "code": "card_declined",
-            "charge": "ch_14pdLTLSkqll2z4UkgIWt5i5"
+            "charge": "ch_14pydnLSkqll2z4UXcrBQ9FL"
           }
         }
     http_version: 
-  recorded_at: Mon, 20 Oct 2014 10:24:59 GMT
+  recorded_at: Tue, 21 Oct 2014 09:09:20 GMT
 recorded_with: VCR 2.9.3

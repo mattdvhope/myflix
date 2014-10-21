@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 20 Oct 2014 10:03:36 GMT
+      - Tue, 21 Oct 2014 09:09:12 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
@@ -45,7 +45,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - da3bf194-e99c-4f61-b459-b72a5a8b16e2
+      - 79159a83-2e44-4ecf-a017-946a17c165f8
       Stripe-Version:
       - '2014-09-08'
       Strict-Transport-Security:
@@ -54,14 +54,14 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_14pd0mLSkqll2z4UY3LQP3Vc",
+          "id": "tok_14pydgLSkqll2z4UwHayZ32s",
           "livemode": false,
-          "created": 1413799416,
+          "created": 1413882552,
           "used": false,
           "object": "token",
           "type": "card",
           "card": {
-            "id": "card_14pd0mLSkqll2z4UQmx7ipOp",
+            "id": "card_14pydgLSkqll2z4UVIUjtnFQ",
             "object": "card",
             "last4": "0002",
             "brand": "Visa",
@@ -82,13 +82,13 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Mon, 20 Oct 2014 10:03:36 GMT
+  recorded_at: Tue, 21 Oct 2014 09:09:13 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=999&currency=usd&card=tok_14pd0mLSkqll2z4UY3LQP3Vc&description=an%20invalid%20charge
+      string: amount=999&currency=usd&card=tok_14pydgLSkqll2z4UwHayZ32s&description=an%20invalid%20charge
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -114,7 +114,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 20 Oct 2014 10:03:38 GMT
+      - Tue, 21 Oct 2014 09:09:14 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
@@ -128,7 +128,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - 10749104-c509-4c13-bbda-0043e7b013a9
+      - 290cc6fc-d407-4adc-802e-17721f73dace
       Stripe-Version:
       - '2014-09-08'
       Strict-Transport-Security:
@@ -141,9 +141,9 @@ http_interactions:
             "message": "Your card was declined.",
             "type": "card_error",
             "code": "card_declined",
-            "charge": "ch_14pd0oLSkqll2z4UxchU1XeW"
+            "charge": "ch_14pydiLSkqll2z4UtWQgV7Kc"
           }
         }
     http_version: 
-  recorded_at: Mon, 20 Oct 2014 10:03:38 GMT
+  recorded_at: Tue, 21 Oct 2014 09:09:14 GMT
 recorded_with: VCR 2.9.3
