@@ -71,6 +71,11 @@ describe UsersController do
       before do
         post :create, user: { password: "password", full_name: "name" }
       end
+
+      after do
+        ActionMailer::Base.deliveries.clear # With most specs, the db will be rolled back to its initial state--but not with ActionMailer b/c we're sending out emails. When you run rspec, email sending is added to the ActionMailer::Base.deliveries queue; this is not part of the db transaction, so this will not be rolled back.  Doing this 'after' will cause the ActionMailer::Base.deliveries queue to be restored each time. After each spec runs, we'll clear the ActionMailer. 'after' means that the code within a block will run after each of the specs.
+      end
+
       it "does not create a user" do
         expect(User.count).to eq(0)
       end
@@ -85,7 +90,6 @@ describe UsersController do
         post :create, user: { email: "matt@email.com" } # Invalid user input
       end
       it "does not send out email with invalid inputs" do
-        post :create, user: { email: "john@test.com" }
         expect(ActionMailer::Base.deliveries).to be_empty
       end
     end
