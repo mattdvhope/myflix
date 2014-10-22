@@ -51,6 +51,11 @@ describe InvitationsController do
       end
     end
     context "with invalid input" do # For 'invitations', we'll require all 3 fields to be present in invitation.rb
+
+      after do
+        ActionMailer::Base.deliveries.clear # With most specs, the db will be rolled back to its initial state--but not with ActionMailer b/c we're sending out emails. When you run rspec, email sending is added to the ActionMailer::Base.deliveries queue; this is not part of the db transaction, so this will not be rolled back.  Doing this 'after' will cause the ActionMailer::Base.deliveries queue to be restored each time. After each spec runs, we'll clear the ActionMailer. 'after' means that the code within a block will run after each of the specs.
+      end
+
       it "renders the :new template" do
         set_current_user
         post :create, invitation: { recipient_email: "tom@test.tv", message: "Friend me at MyFlix." }
