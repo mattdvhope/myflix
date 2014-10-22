@@ -7,9 +7,9 @@ feature 'User registers', { vcr: true, js: true } do
     fill_in "Password", with: "password"
     fill_in "Full Name", with: "Matt Test"
 
-    fill_in "Credit Card Number", with: "4242424242424242"
+    fill_in "Credit Card Number", with: "4012888888881881"
     fill_in "Security Code", with: "123"
-    select "7 - July", from: "date_month"
+    select "10 - October", from: "date_month"
     select "2018", from: "date_year"
 
     click_button "Sign Up"
