@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=999&currency=usd&description=Sign%20up%20charge%20for%20matt%40email.test
+      string: amount=999&currency=usd&card=tok_14q2tXLSkqll2z4U82yNS11s&description=Sign%20up%20charge%20for%20matt%40email.test
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -22,20 +22,20 @@ http_interactions:
         Matthews-MacBook-Pro.local 13.4.0 Darwin Kernel Version 13.4.0: Sun Aug 17
         19:50:11 PDT 2014; root:xnu-2422.115.4~1/RELEASE_X86_64 x86_64"}'
       Content-Length:
-      - '80'
+      - '114'
   response:
     status:
-      code: 400
-      message: Bad Request
+      code: 200
+      message: OK
     headers:
       Server:
       - nginx
       Date:
-      - Tue, 21 Oct 2014 09:09:21 GMT
+      - Tue, 21 Oct 2014 13:41:53 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
-      - '122'
+      - '1304'
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Methods:
@@ -45,7 +45,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - f12fabdb-6ced-462b-ba40-c2206ebfdccb
+      - c02b9d68-9caf-44ff-b70b-ef2b4649f44e
       Stripe-Version:
       - '2014-09-08'
       Strict-Transport-Security:
@@ -54,11 +54,59 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "error": {
-            "type": "invalid_request_error",
-            "message": "You must supply either a card or a customer id"
-          }
+          "id": "ch_14q2tZLSkqll2z4UhWroLwxx",
+          "object": "charge",
+          "created": 1413898913,
+          "livemode": false,
+          "paid": true,
+          "amount": 999,
+          "currency": "usd",
+          "refunded": false,
+          "card": {
+            "id": "card_14q2tXLSkqll2z4UdgKuXVUA",
+            "object": "card",
+            "last4": "1881",
+            "brand": "Visa",
+            "funding": "credit",
+            "exp_month": 10,
+            "exp_year": 2018,
+            "fingerprint": "2yHIr5tVltV73NXa",
+            "country": "US",
+            "name": null,
+            "address_line1": null,
+            "address_line2": null,
+            "address_city": null,
+            "address_state": null,
+            "address_zip": null,
+            "address_country": null,
+            "cvc_check": "pass",
+            "address_line1_check": null,
+            "address_zip_check": null,
+            "dynamic_last4": null,
+            "customer": null
+          },
+          "captured": true,
+          "refunds": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/charges/ch_14q2tZLSkqll2z4UhWroLwxx/refunds",
+            "data": []
+          },
+          "balance_transaction": "txn_14q2tZLSkqll2z4U6xEu3EqJ",
+          "failure_message": null,
+          "failure_code": null,
+          "amount_refunded": 0,
+          "customer": null,
+          "invoice": null,
+          "description": "Sign up charge for matt@email.test",
+          "dispute": null,
+          "metadata": {},
+          "statement_description": null,
+          "receipt_email": null,
+          "receipt_number": null,
+          "shipping": null
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 09:09:21 GMT
+  recorded_at: Tue, 21 Oct 2014 13:41:53 GMT
 recorded_with: VCR 2.9.3
