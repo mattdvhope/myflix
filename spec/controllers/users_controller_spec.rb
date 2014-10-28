@@ -64,7 +64,7 @@ describe UsersController do
         charge = double(:charge, successful?: false, error_message: "Your card was declined.")
         StripeWrapper::Charge.should_receive(:create).and_return(charge)
         post :create, user: Fabricate.attributes_for(:user), stripeToken: '1231234' # It doesn't matter what our stripeToken is since we've stubbed it already; we're just using this info in this line to return a declined charge error.
-        expect(flash[:error]).to be_present
+        expect(flash[:danger]).to be_present
       end
     end
     context "invalid personal info" do
