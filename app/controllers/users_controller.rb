@@ -22,7 +22,7 @@ class UsersController < ApplicationController
         AppMailer.delay.send_welcome_email(@user) # Don't need 'deliver' b/c we're using the #delay method from Sidekiq.
         redirect_to sign_in_path
       else
-        flash[:error] = charge.error_message # In the use of our stubbing out of methods in our tests for this controller, we don't yet have to actually implement the "#error_message" method for 'stripe_wrapper.rb' -- for the purpose of testing. We 'drive out' the implementation of this method before we even define it (in stripe_wrapper.rb)
+        flash[:danger] = charge.error_message # In the use of our stubbing out of methods in our tests for this controller, we don't yet have to actually implement the "#error_message" method for 'stripe_wrapper.rb' -- for the purpose of testing. We 'drive out' the implementation of this method before we even define it (in stripe_wrapper.rb)
         render :new
       end
     else
