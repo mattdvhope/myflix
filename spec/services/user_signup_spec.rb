@@ -12,7 +12,7 @@ describe UserSignup do
         ActionMailer::Base.deliveries.clear # With most specs, the db will be rolled back to its initial state--but not with ActionMailer b/c we're sending out emails. When you run rspec, email sending is added to the ActionMailer::Base.deliveries queue; this is not part of the db transaction, so this will not be rolled back.  Doing this 'after' will cause the ActionMailer::Base.deliveries queue to be restored each time. After each spec runs, we'll clear the ActionMailer. 'after' means that the code within a block will run after each of the specs.
       end
       it "creates the user" do
-        UserSignup.new(Fabricate.build(:user)).sign_up("some_stripe_token", nil) # We've stubbed the StripeWrapper above, so it doesn't matter what we put in as the params for #sign_up ; In this test, we use 'build' rather than 'attributes_for', otherwise, we'll get, undefined method 'valid?' b/c we don't want to save it yet.
+        UserSignup.new(Fabricate.build(:user)).sign_up("some_stripe_token", nil) # We've stubbed the StripeWrapper above, so it doesn't matter what we put in as the params for #sign_up ; In this test, we use 'build' rather than 'attributes_for', otherwise, we'll get, undefined method 'valid?' b/c we don't want to save it here.
         expect(User.count).to eq(1)
       end
       it "makes the user follow the inviter" do # This (& the next 2 tests) tests that whenever a new user becomes a new user as a result of an invitation, he will automatically follow that inviter.
