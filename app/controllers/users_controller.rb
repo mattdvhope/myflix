@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  def create
+  def create #
     @user = User.new(user_params)
     result = UserSignup.new(@user).sign_up(params[:stripeToken], params[:invitation_token]) # This is the 'Service Object' in 'app/services/user_signup.rb'. All the complex logic of the user signing up is in that 'Service Object'. We assign it to 'result' because we want to know (in 'app/services/user_signup.rb') whether its state--its return value--is :success or :failed
 
