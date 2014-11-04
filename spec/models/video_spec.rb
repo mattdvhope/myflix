@@ -33,4 +33,17 @@ describe Video do
       expect(Video.search_by_title("")).to eq([])
     end
   end
+
+  describe "#rating_average" do
+    it "returns average rating (whole number) if any rating exists" do
+      bugs_hur = Video.create(title: "Bugs Hur", description: "Rabbit circus maximus")
+      bad_rev = Review.create(video: bugs_hur, content: "Bad", rating: 1)
+      mid_rev = Review.create(video: bugs_hur, content: "Mid", rating: 4)
+      expect(bugs_hur.rating_average).to eq(2)
+    end
+    it "returns no rating if no ratings exist" do
+      bugs_hur = Video.create(title: "Bugs Hur", description: "Rabbit circus maximus")
+      expect(bugs_hur.rating_average).to eq(0)
+    end
+  end
 end
