@@ -19,8 +19,14 @@ class Video < ActiveRecord::Base
       0
     else
       review_ratings = reviews.map { |review| review.rating }
-      average = (review_ratings.inject{ |sum, el| sum + el }.to_f / review_ratings.size).to_i
+      # average = (review_ratings.inject{ |sum, el| sum + el }.to_f / review_ratings.size).to_i
+      average = review_ratings.inject{ |sum, el| sum + el }.to_f / review_ratings.size
     end
   end
+
+#   def rating_average
+#     reviews.average(:rating).round(1) if reviews.average(:rating)
+# # binding.pry
+#   end
 
 end
