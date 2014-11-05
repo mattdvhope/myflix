@@ -39,11 +39,11 @@ describe Video do
       bugs_hur = Video.create(title: "Bugs Hur", description: "Rabbit circus maximus")
       bad_rev = Review.create(video: bugs_hur, content: "Bad", rating: 1)
       mid_rev = Review.create(video: bugs_hur, content: "Mid", rating: 4)
-      expect(bugs_hur.rating_average).to eq(2)
+      expect(bugs_hur.rating_average).to eq(2.5)
     end
     it "returns no rating if no ratings exist" do
       bugs_hur = Video.create(title: "Bugs Hur", description: "Rabbit circus maximus")
-      expect(bugs_hur.rating_average).to eq(0)
+      expect(bugs_hur.rating_average).to eq(0.0)
     end
   end
 end
