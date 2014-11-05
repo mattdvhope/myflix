@@ -14,19 +14,18 @@ class Video < ActiveRecord::Base
     where("title LIKE ?", "%#{search_term}%").order("created_at DESC")
   end
 
-  def rating_average
-    if (reviews.map { |review| review.rating }).compact == []
-      0
-    else
-      review_ratings = reviews.map { |review| review.rating }
-      # average = (review_ratings.inject{ |sum, el| sum + el }.to_f / review_ratings.size).to_i
-      average = review_ratings.inject{ |sum, el| sum + el }.to_f / review_ratings.size
-    end
+  # def rating_average
+  #   if (reviews.map { |review| review.rating }).compact == []
+  #     0
+  #   else
+  #     review_ratings = reviews.map { |review| review.rating }
+  #     # average = (review_ratings.inject{ |sum, el| sum + el }.to_f / review_ratings.size).to_i
+  #     average = review_ratings.inject{ |sum, el| sum + el }.to_f / review_ratings.size
+  #   end
+  # end
+
+  def rating_average # This method is used in app/decorators/video_decorator.rb
+     reviews.average(:rating) ? reviews.average(:rating).round(1) : 0.0
+# binding.pry
   end
-
-#   def rating_average
-#     reviews.average(:rating).round(1) if reviews.average(:rating)
-# # binding.pry
-#   end
-
 end
