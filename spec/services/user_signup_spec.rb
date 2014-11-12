@@ -3,10 +3,11 @@ require 'spec_helper'
 describe UserSignup do
   describe "#sign_up" do
     context "valid personal info and valid card" do
-      let(:charge) { double(:charge, successful?: true) } # This provides the doubled 'charge' that should be returned from the stubbed 'create' method below: StripeWrapper::Charge.should_receive(:create).and_return(charge)
+      # let(:charge) { double(:charge, successful?: true) } # This provides the doubled 'charge' that should be returned from the stubbed 'create' method below: StripeWrapper::Charge.should_receive(:create).and_return(charge)
+      let(:customer) { double(:customer, successful?: true) }
 
       before do
-        StripeWrapper::Charge.should_receive(:create).and_return(charge) # Use of 'should_receive' REQUIRES the collaboration between our users_controller and our stripe_wrapper.
+        StripeWrapper::Customer.should_receive(:create).and_return(customer) # Use of 'should_receive' REQUIRES the collaboration between our users_controller and our stripe_wrapper.
       end
       after do
         ActionMailer::Base.deliveries.clear # With most specs, the db will be rolled back to its initial state--but not with ActionMailer b/c we're sending out emails. When you run rspec, email sending is added to the ActionMailer::Base.deliveries queue; this is not part of the db transaction, so this will not be rolled back.  Doing this 'after' will cause the ActionMailer::Base.deliveries queue to be restored each time. After each spec runs, we'll clear the ActionMailer. 'after' means that the code within a block will run after each of the specs.
@@ -47,8 +48,8 @@ describe UserSignup do
 
     context "valid personal info and declined card" do # in 'users/new.html.haml', see comment under the Sign Up button about this needed test.
       it "does not create a new user record" do
-        charge = double(:charge, successful?: false, error_message: "Your card was declined.") # For this stubbed charge, we have to return ALL of the pertinant info, including error_message.
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        customer = double(:customer, successful?: false, error_message: "Your card was declined.") # For this stubbed charge, we have to return ALL of the pertinant info, including error_message.
+        StripeWrapper::Customer.should_receive(:create).and_return(customer)
         UserSignup.new(Fabricate.build(:user)).sign_up('1223344', nil)
         expect(User.count).to eq(0)
       end
@@ -70,7 +71,7 @@ describe UserSignup do
 
       it "does not charge the credit card" do # Does not charge the card when the user provides invalid personal info. We should not call 'StripeWrapper::Charge.create' at all.
         UserSignup.new(User.new(email: "matt@example.com")).sign_up('1223344', nil)
-        StripeWrapper::Charge.should_not_receive(:create) # We assert the StripeWrapper::Charge is not called
+        StripeWrapper::Customer.should_not_receive(:create) # We assert the StripeWrapper::Charge is not called
       end
 
       it "does not send out email with invalid inputs" do
