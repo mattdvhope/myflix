@@ -4,7 +4,7 @@ describe UserSignup do
   describe "#sign_up" do
     context "valid personal info and valid card" do
       # let(:charge) { double(:charge, successful?: true) } # This provides the doubled 'charge' that should be returned from the stubbed 'create' method below: StripeWrapper::Charge.should_receive(:create).and_return(charge)
-      let(:customer) { double(:customer, successful?: true) }
+      let(:customer) { double(:customer, successful?: true, customer_token: "abcdefg") }
 
       before do
         StripeWrapper::Customer.should_receive(:create).and_return(customer) # Use of 'should_receive' REQUIRES the collaboration between our users_controller and our stripe_wrapper.
@@ -15,6 +15,10 @@ describe UserSignup do
       it "creates the user" do
         UserSignup.new(Fabricate.build(:user)).sign_up("some_stripe_token", nil) # We've stubbed the StripeWrapper above, so it doesn't matter what we put in as the params for #sign_up ; In this test, we use 'build' rather than 'attributes_for', otherwise, we'll get, undefined method 'valid?' b/c we don't want to save it here.
         expect(User.count).to eq(1)
+      end
+      it "stores the customer token from stripe" do
+        UserSignup.new(Fabricate.build(:user)).sign_up("some_stripe_token", nil) # We've stubbed the StripeWrapper above, so it doesn't matter what we put in as the params for #sign_up ; In this test, we use 'build' rather than 'attributes_for', otherwise, we'll get, undefined method 'valid?' b/c we don't want to save it here.
+        expect(User.first.customer_token).to eq("abcdefg")
       end
       it "makes the user follow the inviter" do # This (& the next 2 tests) tests that whenever a new user becomes a new user as a result of an invitation, he will automatically follow that inviter.
         alice = Fabricate(:user)
