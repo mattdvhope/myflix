@@ -18,6 +18,7 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog' # For Amazon S3
 gem 'stripe'
+gem 'stripe_event'
 gem 'figaro' # creates the 'config/application.yml' file (in gitignore)
 gem 'draper' # For using decorators
 
