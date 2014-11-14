@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 11 Nov 2014 08:36:43 GMT
+      - Fri, 14 Nov 2014 08:09:36 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
@@ -45,7 +45,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - eeee06b9-6f46-4f1e-8e05-587b6bcbcda2
+      - 7f7d947c-0a2a-4e66-8cf1-6cdb10e2a2eb
       Stripe-Version:
       - '2014-09-08'
       Strict-Transport-Security:
@@ -54,14 +54,14 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_14xa8lLSkqll2z4UK7Si19TV",
+          "id": "tok_14yf9ALSkqll2z4U95bruZRF",
           "livemode": false,
-          "created": 1415695003,
+          "created": 1415952576,
           "used": false,
           "object": "token",
           "type": "card",
           "card": {
-            "id": "card_14xa8lLSkqll2z4UuWVtn6YN",
+            "id": "card_14yf9ALSkqll2z4Ufp6vqIpR",
             "object": "card",
             "last4": "0002",
             "brand": "Visa",
@@ -82,13 +82,13 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 11 Nov 2014 08:36:44 GMT
+  recorded_at: Fri, 14 Nov 2014 08:09:36 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: card=tok_14xa8lLSkqll2z4UK7Si19TV&plan=base&email=davonte.davis%40medhurst.net
+      string: card=tok_14yf9ALSkqll2z4U95bruZRF&plan=base&email=kailey_bahringer%40oberbrunner.info
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -105,7 +105,7 @@ http_interactions:
         Matthews-MacBook-Pro.local 13.4.0 Darwin Kernel Version 13.4.0: Sun Aug 17
         19:50:11 PDT 2014; root:xnu-2422.115.4~1/RELEASE_X86_64 x86_64"}'
       Content-Length:
-      - '78'
+      - '85'
   response:
     status:
       code: 402
@@ -114,7 +114,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 11 Nov 2014 08:36:45 GMT
+      - Fri, 14 Nov 2014 08:09:37 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
@@ -128,7 +128,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - 6159cdfa-5557-444a-a542-12d224a2088d
+      - e79735b0-91e7-47b5-ba7b-3818bb66f43f
       Stripe-Version:
       - '2014-09-08'
       Strict-Transport-Security:
@@ -144,5 +144,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 11 Nov 2014 08:36:46 GMT
+  recorded_at: Fri, 14 Nov 2014 08:09:37 GMT
 recorded_with: VCR 2.9.3
