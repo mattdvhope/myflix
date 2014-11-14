@@ -14,7 +14,7 @@ class UserSignup  # This is a 'Service Object' that we have extracted from 'user
         :card => stripe_token
       )
       if customer.successful? # In the use of our stubbing out of methods in our tests for this controller, we don't yet have to actually implement the "#successful?" method for 'stripe_wrapper.rb' -- for the purpose of testing. We 'drive out' the implementation of this method before we even define it (in stripe_wrapper.rb)
-        @user.customer_token = customer.customer_token
+        @user.customer_token = customer.customer_token # The '#customer_token' method is from 'models/stripe_wrapper.rb' ; When '@user.customer_token' is made equal to 'customer.customer_token', the user's 'customer_token' field will be filled with the 'id' from Stripe's response (i.e., "id": "cus_58sp0iNANLMnQo" [as an example]).
         @user.save
         handle_invitation(invitation_token)
         AppMailer.delay.send_welcome_email(@user) # Don't need 'deliver' b/c we're using the #delay method from Sidekiq.
