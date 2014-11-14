@@ -53,5 +53,9 @@ module StripeWrapper
     def successful?
       response.present?
     end
+
+    def customer_token # We need an actual customer token from Stripe's response (as we're working with webhoods). The customer token from Stripe is from the response's id (example: "id": "cus_20dBLoo2XfdcSk"), therefore within this method here we're simply looking for 'response.id' ; You can see an example at https://stripe.com/docs/api#create_customer
+      response.id # This is looking at the 'id' field (& returning customer token) from the wrapped response from Stripe. Then the user_signup.rb service will look at the response from the Stripe wrapper and take the customer token from that and store it in the user's record.
+    end
   end
 end
