@@ -41,6 +41,6 @@ Myflix::Application.routes.draw do
 
   resources :invitations, only: [:new, :create]
 
-  mount StripeEvent::Engine => '/stripe_events' # for webhooks with gem 'stripe_event'
+  mount StripeEvent::Engine, at: '/stripe_events' # for webhooks with gem 'stripe_event' ; Make sure you use the ', at:' rather than the hash rocket which was old syntax that now does not work.
 
 end
