@@ -3,6 +3,7 @@ Fabricator(:user) do
   password 'password'
   full_name { Faker::Name.name }
   admin false # This ensures that an 'admin' must specifically be set to 'true' (below).
+  active true
 end
 
 # You can inherit a Fabricator defined on a different model, and then overwrite it with or add new attributes.
