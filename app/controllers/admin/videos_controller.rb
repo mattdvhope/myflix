@@ -1,6 +1,4 @@
-class Admin::VideosController < ApplicationController # The controller has a module which is 'admin' ; These will be automatically wired up to the routes and views according to convention.
-  before_action :require_user
-  before_action :require_admin # In the rails console, choose the user(s) you want as 'admin' and then type, > matt.update_column(:admin, true) to update that user's column to be true.
+class Admin::VideosController < AdminsController  # The controller has a module which is 'admin' ; These will be automatically wired up to the routes and views according to convention. In this particular case though, we're making this controller a child of AdminsController rather than ApplicationController b/c AdminsController has the 'require_admin' & 'require_user' methods which are needed in more than one 'admin' controller.
 
   def new
     @video = Video.new
@@ -18,13 +16,6 @@ class Admin::VideosController < ApplicationController # The controller has a mod
   end
 
   private
-
-  def require_admin
-    if !current_user.admin? # "If the current user is not an 'admin'..." ; This 'admin?' method is made available by the 'add_column' of 'admin' (boolean) to the 'users' table using a migration.
-      flash[:error] = "You are not authorized to do that."
-      redirect_to home_path
-    end
-  end
 
   def video_params
     params.require(:video).permit(:title, :description, :small_cover, :large_cover, :category_id, :video_url)
