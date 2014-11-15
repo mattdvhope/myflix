@@ -34,4 +34,8 @@ class User < ActiveRecord::Base
 
   # the #admin? method is now available b/c we've added the column 'admin' (boolean) to the 'users' table.
 
+  def deactivate!
+    update_column(:active, false)
+  end
+
 end
