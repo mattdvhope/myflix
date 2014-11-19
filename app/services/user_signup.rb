@@ -7,7 +7,7 @@ class UserSignup  # This is a 'Service Object' that we have extracted from 'user
   end
 
   def sign_up(stripe_token, invitation_token)
-    if @user.valid? # We have to delay the creation of a user record until after the StripeWrapper::Charge is created, b/c we only want to create the user if the charge is successful, so we'll use the '#valid?' method rather than '#save' here. We can save after we've checked whether the charge was successful.
+    if @user.valid? # We have to delay the creation of a user record until after the StripeWrapper::Customer is created, b/c we only want to create the customer if the charge is successful, so we'll use the '#valid?' method rather than '#save' here. We can save after we've checked whether the charge was successful.
       # Stripe.api_key = ENV['STRIPE_SECRET_KEY']
       customer = StripeWrapper::Customer.create(
         :user => @user,
