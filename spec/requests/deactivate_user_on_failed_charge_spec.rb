@@ -77,7 +77,7 @@ describe "Deactivate user on failed charge" do
 
   it "deactivates a user with the web hook data from stripe for a charge failed", :vcr do # To make this work, we go to 'config/initializers/stripe.rb' and set upf 'charge.failed'
     alice = Fabricate(:user, customer_token: "cus_59K1FvNwoDZDz4")
-    post "/stripe_events", event_data
+    post "/stripe_events", event_data # This will hit our webhood endpoint.
     expect(alice.reload).not_to be_active # We expect 'alice' to be locked/deactivated. We could have a method '#active?' on the model 'alice' so that if the user is active he/she can sign in, use videos, etc.
                 #reload is called here so that the db is reloaded and we now have a refreshed 'alice' record, otherwise the column 'active' would retain its default boolean value of 'true' ; The object 'alice' does not know that the record has been changed (when we'd posted '/stripe_events') in 'config/initializers/stripe.rb' (i.e. that the '#deactivate' method has been called on 'user')
   end
