@@ -36,6 +36,11 @@ class User < ActiveRecord::Base
 
   def deactivate!
     update_column(:active, false)
+    AppMailer.delay.send_card_problem_email(self)
+  end
+
+  def activate!
+    update_column(:active, true)
   end
 
 end
