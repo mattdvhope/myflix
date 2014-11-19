@@ -2,7 +2,6 @@ class Admin::PaymentsController < AdminsController # The controller has a module
 
   def index
     @payments = Payment.all # NEVER do #all for a real app ; Work with your designer in doing pagination.
-# binding.pry
   end
 
 end
