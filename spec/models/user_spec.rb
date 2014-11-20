@@ -62,5 +62,26 @@ describe User do
       alice.deactivate!
       expect(alice).not_to be_active
     end
+
+    it "sends out an email to the user who has been deactivated" do
+      alice = Fabricate(:user, active: true)
+      alice.deactivate!
+      expect(ActionMailer::Base.deliveries.last.to).to eq([alice.email]) # the 'to' after 'last' should be an array b/c we can an email to multiple recipients.
+    end
+
+    it "sends out an email containing the user's name with valid inputs" do
+      alice = Fabricate(:user, active: true)
+      alice.deactivate!
+      expect(ActionMailer::Base.deliveries.last.body).to include(alice.full_name)
+      expect(ActionMailer::Base.deliveries.last.subject).to include("Your MyFlix account has been suspended.")
+    end
+  end
+
+  describe "activate!" do
+    it "deactivates an active user" do
+      alice = Fabricate(:user, active: false)
+      alice.activate!
+      expect(alice).to be_active
+    end
   end
 end
