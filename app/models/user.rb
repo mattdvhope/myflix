@@ -34,4 +34,13 @@ class User < ActiveRecord::Base
 
   # the #admin? method is now available b/c we've added the column 'admin' (boolean) to the 'users' table.
 
+  def deactivate!
+    update_column(:active, false)
+    AppMailer.delay.send_card_problem_email(self)
+  end
+
+  def activate!
+    update_column(:active, true)
+  end
+
 end

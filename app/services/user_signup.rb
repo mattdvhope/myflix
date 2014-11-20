@@ -7,22 +7,22 @@ class UserSignup  # This is a 'Service Object' that we have extracted from 'user
   end
 
   def sign_up(stripe_token, invitation_token)
-    if @user.valid? # We have to delay the creation of a user record until after the StripeWrapper::Charge is created, b/c we only want to create the user if the charge is successful, so we'll use the '#valid?' method rather than '#save' here. We can save after we've checked whether the charge was successful.
+    if @user.valid? # We have to delay the creation of a user record until after the StripeWrapper::Customer is created, b/c we only want to create the customer if the charge is successful, so we'll use the '#valid?' method rather than '#save' here. We can save after we've checked whether the charge was successful.
       # Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-      charge = StripeWrapper::Charge.create(
-        :amount => 999,
-        :card => stripe_token,
-        :description => "Sign up charge for #{@user.email}"
+      customer = StripeWrapper::Customer.create(
+        :user => @user,
+        :card => stripe_token
       )
-      if charge.successful? # In the use of our stubbing out of methods in our tests for this controller, we don't yet have to actually implement the "#successful?" method for 'stripe_wrapper.rb' -- for the purpose of testing. We 'drive out' the implementation of this method before we even define it (in stripe_wrapper.rb)
+      if customer.successful? # In the use of our stubbing out of methods in our tests for this controller, we don't yet have to actually implement the "#successful?" method for 'stripe_wrapper.rb' -- for the purpose of testing. We 'drive out' the implementation of this method before we even define it (in stripe_wrapper.rb)
+        @user.customer_token = customer.customer_token # The '#customer_token' method is from 'models/stripe_wrapper.rb' ; When '@user.customer_token' is made equal to 'customer.customer_token', the user's 'customer_token' field will be filled with the 'id' from Stripe's response (i.e., "id": "cus_58sp0iNANLMnQo" [as an example]).
         @user.save
         handle_invitation(invitation_token)
         AppMailer.delay.send_welcome_email(@user) # Don't need 'deliver' b/c we're using the #delay method from Sidekiq.
         @status = :success # For this execution path, the @status is set to :success ; We modify the internal state of this object on this line, then in the line below we return the object itself: "self"
-        self # We return the 'self' (service object) here b/c we want its state so that the controller can query whether the sign_up 'result' is successful? (true) or not.
+        self # We return the 'self' (service object) here b/c we want its state so that users_controller.rb can query whether the sign_up 'result' is successful? (true) or not.
       else
         @status = :failed # We modify the internal state of this object on this line, then in the line below we return the object itself: "self"
-        @error_message = charge.error_message # If the @status is failed, we also need to set the @error_message ; # In the use of our stubbing out of methods in our tests for the controller, we don't yet have to actually implement the "#error_message" method for 'stripe_wrapper.rb' -- for the purpose of testing. We 'drive out' the implementation of this method before we even define it (in stripe_wrapper.rb)
+        @error_message = customer.error_message # If the @status is failed, we also need to set the @error_message ; # In the use of our stubbing out of methods in our tests for the controller, we don't yet have to actually implement the "#error_message" method for 'stripe_wrapper.rb' -- for the purpose of testing. We 'drive out' the implementation of this method before we even define it (in stripe_wrapper.rb)
         self
       end
     else

@@ -15,4 +15,9 @@ class AppMailer < ActionMailer::Base
     @invitation = invitation
     mail to: invitation.recipient_email, subject: "Invitation to join MyFlix"
   end
+
+  def send_card_problem_email(user)
+    @user = user
+    mail to: user.email, subject: "Your MyFlix account has been suspended."
+  end
 end
