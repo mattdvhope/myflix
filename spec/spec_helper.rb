@@ -4,7 +4,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/email/rspec'
-require 'sidekiq/testing/inline' # Allows passing of rspec testing with ActionMailer::Base...(makes testing inline; allows for the '#delay' method in the controllers, etc while testing).
+require 'sidekiq/testing/inline' # Allows passing of rspec testing with ActionMailer::Base...(makes testing inline; allows for the '#delay' method in the controllers, etc while testing). Even though it is 'delayed' in actual usage, in the rspec testing, the delay will not be implemented, but rather the email will be sent inline with the rest of the code.
 require 'vcr' # Use vcr to make the tests involving third-party APIs (i.e., in spec/models/stripe_wrapper_spec.rb) run faster by enabling them to not need to hit the remote API server.  Instead, it only hits the server once and then records all that in 'spec/cassettes/...' for use in future tests.  This vcr code here came from https://www.relishapp.com/vcr/vcr/v/2-9-0/docs/test-frameworks/usage-with-rspec-metadata
 
 Capybara.server_port = 52662 # In 'test.rb', make sure the local host is 52662 --> config.action_mailer.default_url_options = { host: 'localhost:52662' } ... or another (preferably 5-digit port number; make sure whatever port number you choose is not being used already; only ports 1-65535 exist; most likely 5 digit ports will be available, especially if your port consists of random numbers).
