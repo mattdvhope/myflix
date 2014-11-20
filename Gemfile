@@ -11,7 +11,7 @@ gem 'sass-rails'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'sidekiq'
-gem 'unicorn'
+gem 'unicorn' # For running production server on Heroku...see Procfile ; Rails, by default, handles one request at a time. 
 gem "sentry-raven"
 gem 'paratrooper' # for setting up the staging environment
 gem 'carrierwave'
