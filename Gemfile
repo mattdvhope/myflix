@@ -13,7 +13,7 @@ gem 'jquery-rails'
 gem 'sidekiq'
 gem 'unicorn'
 gem "sentry-raven"
-gem 'paratrooper'
+gem 'paratrooper' # for setting up the staging environment
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog' # For Amazon S3
