@@ -14,7 +14,7 @@ gem 'sidekiq'
 gem 'unicorn' # For running production server on Heroku...see Procfile file ; Rails, by default, handles one request at a time, so we need unicorn to run multiple processes ('web','worker','clock') concurrently.
 gem "sentry-raven" # A gem for error monitoring ; After installing the ‘sentry-raven’ gem, you can go to your Sentry dashboard (through Heroku) and to see run time errors.
 gem 'paratrooper' # for setting up the staging environment
-gem 'carrierwave'
+gem 'carrierwave' # To work with app/uploaders/...
 gem 'mini_magick'
 gem 'fog' # For Amazon S3
 gem 'stripe'
