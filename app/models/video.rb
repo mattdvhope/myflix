@@ -3,7 +3,7 @@ class Video < ActiveRecord::Base
   belongs_to :category
   has_many :reviews, ->{ order("created_at DESC") }
 
-  mount_uploader :large_cover, LargeCoverUploader # The 'mount_uploader' method is provided by the CarrierWave gem. The 'LargeCoverUploader' class is in 'app/uploaders/....'
+  mount_uploader :large_cover, LargeCoverUploader # The 'mount_uploader' method is provided by the CarrierWave gem. The 'LargeCoverUploader' class is in 'app/uploaders/....' ; 'large_cover' is a column in the 'videos' table
   mount_uploader :small_cover, SmallCoverUploader
 
   validates_presence_of :title, :description
@@ -26,6 +26,5 @@ class Video < ActiveRecord::Base
 
   def rating_average # This method is used in app/decorators/video_decorator.rb
      reviews.average(:rating) ? reviews.average(:rating).round(1) : 0.0
-# binding.pry
   end
 end
