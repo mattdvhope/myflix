@@ -6,7 +6,7 @@ class LargeCoverUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
-  process :resize_to_fill => [665, 375]
+  process :resize_to_fit => [665, 375]
 
   # Choose what kind of storage to use for this uploader:
   # storage :file
