@@ -6,7 +6,7 @@ class LargeCoverUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
-  process :resize_to_fit => [665, 375] # The '#enable_processing' method in 'carrier_wave.rb' allows for the usage of this 'process'
+  process :resize_to_fill => [665, 375] # The '#enable_processing' method in 'carrier_wave.rb' allows for the usage of this 'process'
 
   # Choose what kind of storage to use for this uploader:
   # storage :file
