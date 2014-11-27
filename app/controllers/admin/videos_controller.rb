@@ -5,7 +5,7 @@ class Admin::VideosController < AdminsController  # The controller has a module 
   end
 
   def create
-    @video = Video.create(video_params) # This is a model-backed form, so all the data for this video is hashed under the video hash-key, including the category_id
+    @video = Video.new(video_params) # This is a model-backed form, so all the data for this video is hashed under the video hash-key, including the category_id
     if @video.save
       flash[:success] = "You have successfully added the video, '#{@video.title}.'"
       redirect_to new_admin_video_path
