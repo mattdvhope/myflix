@@ -1,5 +1,5 @@
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3) # This is how many rails instances that you want to start with Unicorn.
-timeout 15
+timeout 30
 preload_app true
 
 before_fork do |server, worker|
